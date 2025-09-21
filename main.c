@@ -1,39 +1,53 @@
+// main.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-int main()
+void write_random_numbers(FILE *f, int count, int MIN_VAL, int MAX_VAL)
 {
-    const char *file1 = "file1.txt", *file2 = "file2.txt", *file3 = "file3.txt";
-    FILE *f1 = fopen(file1, "w"), *f2 = fopen(file2, "w"), *f3 = fopen(file3, "w");
-
-    if (f1 == NULL || f2 == NULL || f3 == NULL)
+    for (int i = 0; i < count; i++)
     {
-        printf("Не удалось создать файлы\n");
-        if (f1)
-            fclose(f1);
-        if (f2)
-            fclose(f2);
-        if (f3)
-            fclose(f3);
-        return 1;
+        int num = (rand() % (MAX_VAL - MIN_VAL + 1)) + MIN_VAL;
+        fprintf(f, "%d%c", num, (i == count - 1) ? '\n' : ' ');
     }
+}
+
+int main(void)
+{
+    enum
+    {
+        MIN_VAL = 1,
+        MAX_VAL = 10,
+        COUNT = 10,
+        FILES = 3
+    };
+
+    const char *filenames[FILES] = {"file1.txt", "file2.txt", "file3.txt"};
+    FILE *files[FILES];
 
     srand(time(NULL));
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < FILES; i++)
     {
-        int num1 = (rand() % 10) + 1;
-        int num2 = (rand() % 10) + 1;
-        int num3 = (rand() % 10) + 1;
-
-        fprintf(f1, "%d ", num1, i == 9 ? '\n' : ' ');
-        fprintf(f2, "%d ", num2, i == 9 ? '\n' : ' ');
-        fprintf(f3, "%d ", num3, i == 9 ? '\n' : ' ');
+        files[i] = fopen(filenames[i], "w");
+        if (!files[i])
+        {
+            printf("Ошибка открытия файла file%d.txt\n", i + 1);
+            while (i--)
+                fclose(files[i]);
+            return 1;
+        }
     }
 
-    fclose(f1);
-    fclose(f2);
-    fclose(f3);
+    for (int i = 0; i < FILES; i++)
+    {
+        write_random_numbers(files[i], COUNT, MIN_VAL, MAX_VAL);
+    }
+
+    for (int i = 0; i < FILES; i++)
+    {
+        fclose(files[i]);
+    }
+
     return 0;
 }

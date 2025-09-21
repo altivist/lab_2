@@ -1,4 +1,4 @@
 .vscode/
 *.out
 numbers
-file*.txt
+*.txt
