@@ -5,6 +5,11 @@
 # CHANGELOG
 0.1
 - Первая ~~кривая~~ тестовая итерация.
+1.0
+- Закрываем корректно остальные файлы, если один из них не открылся.
+- Ставим \n после последнего числа, а не пробел.
 # BUILD
 Debug: `gcc -g -O0 -Wall -Wextra -o numbers main.c`
 Release: `gcc -O2 -DNDEBUG -s -Wall -Wextra -o numbers main.c`
+# RUN
+`./numbers`

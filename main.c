@@ -10,6 +10,12 @@ int main()
     if (f1 == NULL || f2 == NULL || f3 == NULL)
     {
         printf("Не удалось создать файлы\n");
+        if (f1)
+            fclose(f1);
+        if (f2)
+            fclose(f2);
+        if (f3)
+            fclose(f3);
         return 1;
     }
 
@@ -21,15 +27,13 @@ int main()
         int num2 = (rand() % 10) + 1;
         int num3 = (rand() % 10) + 1;
 
-        fprintf(f1, "%d ", num1);
-        fprintf(f2, "%d ", num2);
-        fprintf(f3, "%d ", num3);
+        fprintf(f1, "%d ", num1, i == 9 ? '\n' : ' ');
+        fprintf(f2, "%d ", num2, i == 9 ? '\n' : ' ');
+        fprintf(f3, "%d ", num3, i == 9 ? '\n' : ' ');
     }
 
     fclose(f1);
     fclose(f2);
     fclose(f3);
-
-    f1 = f2 = f3 = NULL;
     return 0;
 }
